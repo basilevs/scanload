@@ -33,7 +33,7 @@ for o, a in opts:
 """
 		exit(1)
 
-counter = Counter(crate.getModule(8))
+counter = Counter(interface.getCrate(2).getModule(8))
 #mover = KvchMover(crate.getModule(20))
 mover = UrrMover(crate.getModule(20), switchChan, 0)
 counterChannels = [0, 1]
@@ -44,9 +44,9 @@ counter.clear(0)
 
 for i in range(0, steps):
 	mover.move(stepSize)
-	map(counter.clear, counterChannels)
+	for chan in counterChannels:
+		counter.clear(chan)
 	sleep(exposition)
-	
 	values = map(lambda chan: counter.read(chan)/exposition, counterChannels)
 	print i, "\t", "\t".join(map(str, values))
 

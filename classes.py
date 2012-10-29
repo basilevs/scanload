@@ -10,18 +10,18 @@ class Counter(object):
 	def clear(self, ch):
 		b = ch * 2 #channel base
 		try:
-			self.module.af(Af(b+1, 9))
+			self.module.af(Af(b, 9))
 		except Error:
 			pass
 		try:
-			self.module.af(Af(b, 9))
+			self.module.af(Af(b+1, 9))
 		except Error:
 			pass
 	def read(self, ch):
 		b = ch * 2 #channel base
 		high = self.module.afr16(Af(b+1, 0))
 		low  = self.module.afr16(Af(b, 0))
-		rv  = (high << 16) & 0xFF + low
+		rv  = ((high & 0xFFFF) << 16) + (low & 0xFFFF)
 #		print "High:", high, "low:", low, "result:", rv
 		return rv
 	def increment(self, ch):
